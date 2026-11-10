@@ -234,7 +234,7 @@
 
       <div class="dishes" id="dishes">
         <article class="dish reveal" data-cat="hits bakery">
-          <div class="pic"><img src="img/samsa.jpg" alt="Поднос со свежей самсой" style="object-position:center 55%" loading="lazy"><span class="badge">Хит</span></div>
+          <div class="pic"><img src="img/samsa.jpg" alt="Поднос со свежей самсой" style="object-position:center 55%"><span class="badge">Хит</span></div>
           <div class="dish-body">
             <h3>Самса</h3>
             <p>Хрустящая, с сочным мясом</p>
@@ -243,7 +243,7 @@
         </article>
 
         <article class="dish reveal" data-cat="hits bakery">
-          <div class="pic"><img src="img/lepyoshka.jpg" alt="Лепёшка из тандыра" loading="lazy"><span class="badge">Хит</span></div>
+          <div class="pic"><img src="img/lepyoshka.jpg" alt="Лепёшка из тандыра"><span class="badge">Хит</span></div>
           <div class="dish-body">
             <h3>Лепёшки из тандыра</h3>
             <p>Горячие, прямо из печи</p>
@@ -252,7 +252,7 @@
         </article>
 
         <article class="dish reveal" data-cat="hits cafe">
-          <div class="pic"><img src="img/manty.jpg" alt="Манты, самса и чай" loading="lazy"><span class="badge">Хит</span></div>
+          <div class="pic"><img src="img/manty.jpg" alt="Манты, самса и чай"><span class="badge">Хит</span></div>
           <div class="dish-body">
             <h3>Манты</h3>
             <p>Домашние, с бараниной</p>
@@ -261,7 +261,7 @@
         </article>
 
         <article class="dish reveal" data-cat="hits meat">
-          <div class="pic"><img src="img/shashlyk.jpg" alt="Шашлык на углях" loading="lazy"><span class="badge">Хит</span></div>
+          <div class="pic"><img src="img/shashlyk.jpg" alt="Шашлык на углях"><span class="badge">Хит</span></div>
           <div class="dish-body">
             <h3>Шашлык</h3>
             <p>На углях, с пылу с жару</p>
@@ -270,7 +270,7 @@
         </article>
 
         <article class="dish reveal" data-cat="meat">
-          <div class="pic"><img src="img/vitrina.jpg" alt="Витрина со свежим мясом" loading="lazy"></div>
+          <div class="pic"><img src="img/vitrina.jpg" alt="Витрина со свежим мясом"></div>
           <div class="dish-body">
             <h3>Говядина, грудинка</h3>
             <p>Свежая, разделка при вас</p>
@@ -279,7 +279,7 @@
         </article>
 
         <article class="dish reveal" data-cat="meat">
-          <div class="pic"><img src="img/rebra.jpg" alt="Говяжьи рёбра" loading="lazy"></div>
+          <div class="pic"><img src="img/rebra.jpg" alt="Говяжьи рёбра"></div>
           <div class="dish-body">
             <h3>Говядина, рёбра</h3>
             <p>Для бульона и гриля</p>
@@ -288,7 +288,7 @@
         </article>
 
         <article class="dish reveal" data-cat="meat">
-          <div class="pic"><img src="img/prilavok.jpg" alt="Прилавок с мясом" loading="lazy"></div>
+          <div class="pic"><img src="img/prilavok.jpg" alt="Прилавок с мясом"></div>
           <div class="dish-body">
             <h3>Говядина, лопатка</h3>
             <p>Без кости, на рубку</p>
@@ -422,6 +422,11 @@
           d.style.display = show ? '' : 'none';
           if (show) d.classList.add('visible');
         });
+        var grid = document.getElementById('dishes');
+        if (grid) {
+          var gt = grid.getBoundingClientRect().top;
+          if (gt < 80) window.scrollTo({ top: window.pageYOffset + gt - 96, behavior: 'smooth' });
+        }
       });
     });
 
@@ -484,6 +489,15 @@
       });
     }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
     items.forEach(function (el) { io.observe(el); });
+
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var vh = window.innerHeight;
+        Array.prototype.forEach.call(items, function (el) {
+          if (el.getBoundingClientRect().top < vh * 1.5) el.classList.add('visible');
+        });
+      }, 2000);
+    });
   })();
 </script>
 </body>
