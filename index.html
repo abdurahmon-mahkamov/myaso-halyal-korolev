@@ -164,6 +164,14 @@
     .gallery{grid-template-columns:1fr}
   }
 </style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<script>
+  setTimeout(function () {
+    if (window.__menuReady) return;
+    var els = document.querySelectorAll('.reveal');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('visible');
+  }, 1500);
+</script>
 </head>
 <body>
 
@@ -476,8 +484,17 @@
     }
 
     var items = document.querySelectorAll('.reveal');
+    var revealInView = function () {
+      Array.prototype.forEach.call(items, function (el) {
+        if (el.classList.contains('visible')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible');
+      });
+    };
+
     if (!('IntersectionObserver' in window)) {
-      items.forEach(function (el) { el.classList.add('visible'); });
+      Array.prototype.forEach.call(items, function (el) { el.classList.add('visible'); });
+      window.__menuReady = true;
       return;
     }
     var io = new IntersectionObserver(function (entries) {
@@ -488,16 +505,21 @@
         }
       });
     }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
-    items.forEach(function (el) { io.observe(el); });
+    Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return;
+      queued = true;
+      setTimeout(function () { queued = false; revealInView(); }, 100);
+    }, { passive: true });
+    window.addEventListener('resize', revealInView);
 
     window.addEventListener('load', function () {
-      setTimeout(function () {
-        var vh = window.innerHeight;
-        Array.prototype.forEach.call(items, function (el) {
-          if (el.getBoundingClientRect().top < vh * 1.5) el.classList.add('visible');
-        });
-      }, 2000);
+      setTimeout(revealInView, 400);
     });
+
+    window.__menuReady = true;
   })();
 </script>
 </body>
